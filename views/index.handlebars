@@ -1,1 +1,25 @@
-<p>i work</p>
+<div class="container">
+    <div class="jumbotron">
+        <div class="row">
+            <h2>Mongo Mixtapes</h2>
+            <a href="/" class="btn btn-primary home">Home</a>
+            <a href="/saved" class="btn btn-primary saved">Saved Articles</a>
+            <a href="/scrape" class="btn btn-danger scrape">Scrape New Articles</a>
+        </div>
+    </div>
+    <div class="jumbotron">
+        <ul>
+            {{#each articles}}
+                <li>
+                    <img src="{{img}}">
+        	        <a href="https://www.tinymixtapes.com{{link}}" target="_blank">{{title}}</a>
+                    {{#if saved}}
+                        <button type="button" class="btn btn-primary save" data-id="{{_id}}">Comment</button>
+                    {{else}}
+                        <button type="button" class="btn btn-primary save" data-id="{{_id}}">Save Article</button>
+                    {{/if}}
+                </li>
+            {{/each}}
+        </ul>
+    </div>
+</div>
