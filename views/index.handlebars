@@ -1,25 +1,49 @@
 <div class="container">
-    <div class="jumbotron">
+    <div class="jumbotron heading">
         <div class="row">
-            <h2>Mongo Mixtapes</h2>
+            <img class="logo" src="img/tmt-logo.png" width="200" height="180">
+            <h1>Mongo Mixtapes</h1>
             <a href="/" class="btn btn-primary home">Home</a>
-            <a href="/saved" class="btn btn-primary saved">Saved Articles</a>
+            <a href="/saved" class="btn btn-success saved">Saved Articles</a>
             <a href="/scrape" class="btn btn-danger scrape">Scrape New Articles</a>
         </div>
     </div>
-    <div class="jumbotron">
+    <div class="jumbotron body">
         <ul>
             {{#each articles}}
                 <li>
-                    <img src="{{img}}">
+                    <img class="photo" src="{{img}}">
         	        <a href="https://www.tinymixtapes.com{{link}}" target="_blank">{{title}}</a>
-                    {{#if saved}}
-                        <button type="button" class="btn btn-primary save" data-id="{{_id}}">Comment</button>
-                    {{else}}
-                        <button type="button" class="btn btn-primary save" data-id="{{_id}}">Save Article</button>
-                    {{/if}}
+                    <div>
+                        {{#if saved}}
+                            <button type="button" class="btn btn-primary comment" data-id="{{_id}}">Comment</button>
+                            <button type="button" class="btn btn-danger delete" data-id="{{_id}}">Delete Article</button>
+                        {{else}}
+                            <button type="button" class="btn btn-primary save" data-id="{{_id}}">Save Article</button>
+                        {{/if}}
+                    </div>
                 </li>
             {{/each}}
         </ul>
+    </div>
+</div>
+
+<div id= "commentModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Modal title</h4>
+            </div>
+            <div class="modal-body">
+                <h4>Subject:</h4>
+                <input id="title" name="title">
+                <h4>Comment:</h4>
+                <textarea id="body" name="body"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
     </div>
 </div>

@@ -7,9 +7,7 @@ module.exports = app => {
     app.get('/', (req, res) => {
         db.Article.find({ saved: false }).then(dbArticle => {
             res.render('index', { articles: dbArticle });
-        }).catch(err => {
-            res.json(err);
-        });
+        }).catch(err => res.json(err));
     });
 
     app.get('/scrape', (req, res) => {
@@ -25,9 +23,7 @@ module.exports = app => {
                     if (!alreadyScraped.includes(result.link)) {
                         db.Article.create(result).then(dbArticle => {
                             console.log(dbArticle);
-                        }).catch(err => {
-                            return res.json(err);
-                        });
+                        }).catch(err => res.json(err));
                     };
                 });
                 res.redirect('/');
@@ -37,37 +33,41 @@ module.exports = app => {
 
     app.get('/saved', (req, res) => {
         db.Article.find({ saved: true }).then(dbArticle => {
+            console.log(dbArticle);
             res.render('index', { articles: dbArticle });
-        }).catch(err => {
-            res.json(err);
-        });
+        }).catch(err => res.json(err));
     });
 
-    app.post('/saved:id', (req, res) => {
-        db.Article.findOneAndUpdate({ _id: req.params.id })
-        .then(dbArticle => {
-            res.json(dbArticle);
-        })
-        .catch(err => {
-            res.json(err);
-        })
+    app.get('/saved/:id', (req, res) => {
+        db.Article.findOne({ _id: req.params.id })
+        .then(dbArticle => res.json(dbArticle))
+        .catch(err => res.json(err));
+    });
+
+    app.post('/saved/:id', (req, res) => {
+        db.Comment.create(req.body)
+        .then( result => {
+            db.Article.findOneAndUpdate({ _id: req.params.id }, { $push: { comment: result._id }}, { new: true })
+            .then(dbArticle => res.json(dbArticle))
+            .catch(err => res.json(err));
+        }).catch(err => res.json(err));
+    });
+
+    app.delete('/saved/:id', (req, res) => {
+        db.Article.findByIdAndRemove(req.params.id)
+        .then(dbArticle => res.json(dbArticle))
+        .catch(err => res.json(err));
     });
 
     app.get('/articles', (req, res) => {
-        db.Article.find({}).then(dbArticle => {
-            res.json(dbArticle);
-        }).catch(err => {
-            res.json(err);
-        });
+        db.Article.find({})
+        .then(dbArticle => res.json(dbArticle))
+        .catch(err => res.json(err));
     });
 
     app.post('/articles/:id', (req, res) => {
         db.Article.findOneAndUpdate({ _id: req.params.id }, { saved: true })
-        .then(dbArticle => {
-            res.json(dbArticle);
-        })
-        .catch(err => {
-            res.json(err);
-        });
+        .then(dbArticle => res.json(dbArticle))
+        .catch(err => res.json(err));
     });
 }
