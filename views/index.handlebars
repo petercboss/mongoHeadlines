@@ -14,15 +14,15 @@
                 <li class="border">
                     <img class="photo" src="{{img}}">
         	        <a href="https://www.tinymixtapes.com{{link}}" target="_blank">{{title}}</a>
-                    <div>Comments:
-                        <ul>
-                            {{#each comment}}
-                                <li>{{this.title}} - {{this.body}}</li>
-                            {{/each}}
-                        </ul>
-                    </div>
                     <div>
                         {{#if saved}}
+                            <div>Comments:
+                                <ul>
+                                    {{#each comment}}
+                                        <li>{{this.title}} - {{this.body}}</li>
+                                    {{/each}}
+                                </ul>
+                            </div>
                             <button type="button" class="btn btn-primary comment" data-id="{{_id}}">Comment</button>
                             <button type="button" class="btn btn-danger delete" data-id="{{_id}}">Delete Article</button>
                         {{else}}
