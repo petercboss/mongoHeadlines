@@ -30,7 +30,7 @@ ul {
     cursor: pointer;
 }
 
-li {
+.border {
     border-top: 1px white solid;
 }
 

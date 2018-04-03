@@ -11,9 +11,16 @@
     <div class="jumbotron body">
         <ul>
             {{#each articles}}
-                <li>
+                <li class="border">
                     <img class="photo" src="{{img}}">
         	        <a href="https://www.tinymixtapes.com{{link}}" target="_blank">{{title}}</a>
+                    <div>Comments:
+                        <ul>
+                            {{#each comment}}
+                                <li>{{this.title}} - {{this.body}}</li>
+                            {{/each}}
+                        </ul>
+                    </div>
                     <div>
                         {{#if saved}}
                             <button type="button" class="btn btn-primary comment" data-id="{{_id}}">Comment</button>

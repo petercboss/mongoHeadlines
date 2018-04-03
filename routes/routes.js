@@ -5,7 +5,7 @@ const axios = require('axios');
 
 module.exports = app => {
     app.get('/', (req, res) => {
-        db.Article.find({ saved: false }).then(dbArticle => {
+        db.Article.find({ saved: false }).sort({ '_id': -1 }).then(dbArticle => {
             res.render('index', { articles: dbArticle });
         }).catch(err => res.json(err));
     });
@@ -31,17 +31,24 @@ module.exports = app => {
         });
     });
 
-    app.get('/saved', (req, res) => {
-        db.Article.find({ saved: true }).then(dbArticle => {
-            console.log(dbArticle);
-            res.render('index', { articles: dbArticle });
-        }).catch(err => res.json(err));
+    app.get('/saved', function (req, res) {
+        db.Article.find({ saved: true }).sort({ '_id': -1 })
+        .populate('comment')
+        .exec(function (err, article) {
+            if (err) res.json(err);
+            console.log(article);
+            res.render('index', { articles: article });
+        });
     });
 
     app.get('/saved/:id', (req, res) => {
         db.Article.findOne({ _id: req.params.id })
-        .then(dbArticle => res.json(dbArticle))
-        .catch(err => res.json(err));
+        .populate('comment')
+        .exec((err, article) => {
+            if (err) res.json(err);
+            console.log(article);
+            res.json(article);
+        });
     });
 
     app.post('/saved/:id', (req, res) => {
